@@ -4,6 +4,7 @@
 import { sql } from "drizzle-orm";
 import {
   index,
+  integer,
   pgTableCreator,
   serial,
   timestamp,
@@ -16,19 +17,40 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `dunder-mifflin-x-salah-yudin_${name}`);
+export const createTable = pgTableCreator((title) => `dunder-mifflin-x-salah-yudin_${title}`);
 
-export const posts = createTable(
-  "post",
+export const products = createTable(
+  "product",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
+    title: varchar("title", { length: 256 }).notNull(),
+    price: integer("price").notNull(),
+    description: varchar("description", { length: 512 }),
+    category: varchar("category", { length: 128 }),
+    image: varchar("image", { length: 256 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt"),
   },
   (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+    nameIndex: index("name_idx").on(example.title),
   })
 );
+
+// export const posts = createTable(
+//   "post",
+//   {
+//     id: serial("id").primaryKey(),
+//     name: varchar("name", { length: 256 }),
+
+
+//     createdAt: timestamp("created_at")
+//       .default(sql`CURRENT_TIMESTAMP`)
+//       .notNull(),
+//     updatedAt: timestamp("updatedAt"),
+//   },
+//   (example) => ({
+//     nameIndex: index("name_idx").on(example.name),
+//   })
+// );
