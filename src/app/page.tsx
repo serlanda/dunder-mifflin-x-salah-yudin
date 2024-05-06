@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { db } from "~/server/db";
+import Product from "./components/product";
 
 export const dynamic = "force-dynamic";
 
@@ -25,14 +25,20 @@ export default async function HomePage() {
   return (
     <main className="flex flex-wrap items-center justify-center gap-4">
       <div className="flex flex-row gap-4">
-      {products.map((product) => (
-        <div key={product.id}>
-          <Image src={product.image} width={500} height={500} alt={product.title} />
-          <h2>{product.title}</h2>
-          <p>{product.price}</p>
+        {products.map((product) => (
+          <div key={product.id} className="group overflow-hidden">
+            <Product product={product} />
+          </div>
+              ))}
         </div>
-      ))}
-      </div>
     </main>
   );
 }
+
+// {products.map((product) => (
+//   <div key={product.id}>
+//     <Image src={product.image} width={500} height={500} alt={product.title} />
+//     <h2>{product.title}</h2>
+//     <p>{product.price}</p>
+//   </div>
+// ))}
