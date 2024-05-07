@@ -7,10 +7,10 @@ export default async function ProductPage({
   params: { id: string };
 }) {
 
-  const idAsNumber = Number(productId);
-  if (Number.isNaN(idAsNumber)) throw new Error("Not a number");
+  // const idAsNumber = Number(productId);
+  // if (Number.isNaN(idAsNumber)) throw new Error("Not a number");
 
-  const product = await getProduct(idAsNumber);
+  const product = await getProduct(productId);
   return (
     <main className="flex justify-center items-center gap-80">
       <aside>
@@ -28,7 +28,7 @@ export default async function ProductPage({
         <form action={async () => {
           "use server";
 
-          await deleteProduct(idAsNumber);
+          await deleteProduct(productId);
         }}>
           <button className="bg-red-500 px-4 py-2 rounded-lg">Delete</button>
         </form>
