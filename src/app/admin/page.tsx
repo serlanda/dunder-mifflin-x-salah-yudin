@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import ProductForm from "./_components/productForm";
-// import AdminProductsTable from "./_components/productTable";
+import AdminProductsTable from "./_components/productTable";
 
 export default function AdminPage() {
   const { sessionClaims } = auth();
@@ -16,7 +16,7 @@ export default function AdminPage() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-white font-semibold rounded-lg text-xl">
       <ProductForm/>
       <div className="border">
-       {/* <AdminProductsTable/> */}
+       <AdminProductsTable/>
       </div>
       <div className="border">sa</div>
   

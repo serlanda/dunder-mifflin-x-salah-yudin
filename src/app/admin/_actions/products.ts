@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "~/server/db";
 import { products } from "~/server/db/schema";
@@ -30,7 +30,6 @@ export async function addProduct(formData: FormData) {
     // const imagePath = `products/${crypto.randomUUID()}-${data.image.name}`;
     // await fs.writeFile(imagePath, Buffer.from(await data.image.arrayBuffer()));
 
-
     await db.insert(products).values({
         name: data.name,
         price: data.price,
@@ -38,10 +37,10 @@ export async function addProduct(formData: FormData) {
         category: data.category,
         image: data.image,
     });
+
+    redirect("/admin");
 }
 
 export async function deleteTableProduct(id: string) {
-    const product = await db.delete(products).where(eq(products.id, id))
-
-    if (product === null) notFound();
+    await db.delete(products).where(eq(products.id, id))
 }
