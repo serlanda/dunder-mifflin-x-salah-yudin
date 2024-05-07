@@ -7,10 +7,10 @@ export default function AdminPage() {
   if (sessionClaims?.metadata.role !== "admin") {
     // redirect("/");
     return (
-        <div className="flex justify-center text-xl font-semibold">Yetkisiz giriş</div>
+        <div className="flex justify-center text-xl font-semibold text-white">Yetkisiz giriş</div>
     )
   }
   return (
-    <div className="flex justify-center text-xl font-semibold">Admin sayfasi</div>
+    <div className="flex justify-center text-xl font-semibold text-white">Admin sayfasi</div>
 )
 }
