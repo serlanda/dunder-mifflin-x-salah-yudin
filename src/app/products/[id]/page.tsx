@@ -1,12 +1,18 @@
-"use client";
+import Image from "next/image";
+import { getProduct } from "~/server/queries";
 
-import { usePathname } from "next/navigation"
+export default async function ProductPage({
+  params: { id: productId },
+}: {
+  params: { id: string };
+}) {
+  const idAsNumber = Number(productId);
+  if (Number.isNaN(idAsNumber)) throw new Error("Not a number");
 
-
-export default function ProductPage() {
-    const pathname = usePathname().split("/")[2]
-
-    return (
-        <div className="flex justify-center text-xl font-semibold">Product Sayfası</div>
-    )
+  const product = await getProduct(idAsNumber);
+  return (
+    <div className="flex items-center justify-center">
+      <Image src={product.image} alt={product.name} width={500} height={500} />
+    </div>
+  );
 }

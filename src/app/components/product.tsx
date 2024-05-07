@@ -12,11 +12,12 @@ export default function Product({ product }) {
   return (
     <Link
       href={`/products/${product.id}`}
+      className="text-white"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Image src={product.image} width={500} height={500} alt={product.title}/>
-      <h2>{product.title}</h2>
+      <h2>{product.name}</h2>
       <p>{product.price}</p>
     </Link>
   );
