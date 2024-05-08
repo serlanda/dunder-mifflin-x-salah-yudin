@@ -41,17 +41,6 @@ export default function ProductForm() {
           />
         </div>
         <div className="flex flex-col space-y-2">
-          <label htmlFor="category">Ürün Kategorisi</label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            className="rounded-lg px-4 py-2 text-black"
-            placeholder="Ürünün kategorisini girin."
-            required
-          />
-        </div>
-        <div className="flex flex-col space-y-2">
           <label htmlFor="image">Ürün Görseli Yükle</label>
           <input
             type="text"

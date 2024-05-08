@@ -1,11 +1,10 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
-  boolean,
-  index,
   integer,
+  pgTable,
   pgTableCreator,
   timestamp,
   uuid,
@@ -27,17 +26,48 @@ export const products = createTable(
     name: varchar("name", { length: 256 }).notNull(),
     price: integer("price").notNull(),
     description: varchar("description", { length: 512 }),
-    category: varchar("category", { length: 128 }),
     image: varchar("image", { length: 256 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt"),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
 );
+
+export const users = pgTable(
+  "user",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: varchar("name", { length: 256 }).notNull(),
+    email: varchar("email", { length: 256 }).notNull().unique(),
+    address: varchar("address", { length: 1024 }).notNull(),
+    phone: integer("phone").notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt"),
+  },
+);
+
+export const userRelations = relations(users, ({ many }) => ({
+  userCards: many(userCards),
+}))
+
+export const userCards = pgTable(
+  "shoppingCart",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt"),
+    userId : uuid("userId").notNull(),
+  },
+);
+
+export const userCardRelations = relations(userCards, ({ one }) => ({
+  user: one(users, { fields: [userCards.userId], references: [users.id] }),
+}));
 
 // export const users = createTable(
 //   "user",

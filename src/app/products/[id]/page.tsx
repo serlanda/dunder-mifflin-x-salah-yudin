@@ -25,13 +25,6 @@ export default async function ProductPage({
         <h1>{product.name}</h1>
         <p>{product.price}</p>
         <p>{product.description}</p>
-        <form action={async () => {
-          "use server";
-
-          await deleteProduct(productId);
-        }}>
-          <button className="bg-red-500 px-4 py-2 rounded-lg">Delete</button>
-        </form>
       </section>
     </main>
   );

@@ -15,7 +15,6 @@ const addSchema =z.object({
     name: z.string().min(1),
     price: z.coerce.number().int().min(1),
     description: z.string().min(1),
-    category: z.string().min(1),
     image: z.string().min(1),
     // image: imageSchema.refine(file => file.size > 0, "Required"), 
 })
@@ -34,7 +33,6 @@ export async function addProduct(formData: FormData) {
         name: data.name,
         price: data.price,
         description: data.description,
-        category: data.category,
         image: data.image,
     });
 
@@ -43,4 +41,6 @@ export async function addProduct(formData: FormData) {
 
 export async function deleteTableProduct(id: string) {
     await db.delete(products).where(eq(products.id, id))
+
+    redirect("/admin");
 }
