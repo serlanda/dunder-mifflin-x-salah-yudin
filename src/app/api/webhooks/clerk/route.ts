@@ -1,7 +1,6 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
 import { Webhook } from "svix";
 
 export async function POST(req: Request) {
@@ -67,6 +66,7 @@ export async function POST(req: Request) {
     }
     console.log(user);
   }
+
 
 
 //   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
