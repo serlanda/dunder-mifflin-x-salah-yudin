@@ -8,5 +8,5 @@ export default {
   dbCredentials: {
     connectionString: env.POSTGRES_URL,
   },
-  tablesFilter: ["dunder-mifflin-x-salah-yudin_*"],
+  // tablesFilter: ["dunder-mifflin-x-salah-yudin_*"],
 } satisfies Config;

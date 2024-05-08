@@ -4,8 +4,8 @@
 import { relations, sql } from "drizzle-orm";
 import {
   integer,
+  numeric,
   pgTable,
-  pgTableCreator,
   timestamp,
   uuid,
   varchar,
@@ -17,15 +17,18 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `dunder-mifflin-x-salah-yudin_${name}`);
 
-export const products = createTable(
+
+
+// export const createTable = pgTableCreator((name) => `dunder-mifflin-x-salah-yudin_${name}`);
+
+export const products = pgTable(
   "product",
   {
     id: uuid("id").primaryKey().defaultRandom(),
     name: varchar("name", { length: 256 }).notNull(),
     price: integer("price").notNull(),
-    description: varchar("description", { length: 512 }),
+    description: varchar("description", { length: 1024 }),
     image: varchar("image", { length: 256 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
@@ -38,10 +41,11 @@ export const users = pgTable(
   "user",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    name: varchar("name", { length: 256 }).notNull(),
+    firstName: varchar("firstName", { length: 256 }).notNull(),
+    lastName: varchar("lastName", { length: 256 }).notNull(),
     email: varchar("email", { length: 256 }).notNull().unique(),
-    address: varchar("address", { length: 1024 }).notNull(),
-    phone: integer("phone").notNull(),
+    // address: varchar("address", { length: 1024 }).notNull(),
+    // phone: numeric("phone").notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -49,72 +53,83 @@ export const users = pgTable(
   },
 );
 
-export const userRelations = relations(users, ({ many }) => ({
-  userCards: many(userCards),
-}))
-
-export const userCards = pgTable(
-  "shoppingCart",
+export const userAddress = pgTable(
+  "userAddress",
   {
     id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("userId").references(() => users.id).notNull(),
+    address: varchar("adress", { length: 256 }).notNull(),
+    city: varchar("city", { length: 256 }).notNull(),
+    district: varchar("district", { length: 256 }).notNull(),
+    telephone: varchar("telephone", { length: 256 }).notNull(),
+    postalCode: varchar("postalCode", { length: 256 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt"),
-    userId : uuid("userId").notNull(),
   },
 );
 
-export const userCardRelations = relations(userCards, ({ one }) => ({
-  user: one(users, { fields: [userCards.userId], references: [users.id] }),
-}));
+export const userRelationsWithAddress = relations(users, ({ one }) => ({
+  userAddress: one(userAddress)
+}))
 
-// export const users = createTable(
-//   "user",
+export const userAddressRelations = relations(userAddress, ({ one }) => ({
+  user: one(users, { fields: [userAddress.userId], references: [users.id] }),
+}))
+
+// export const shoppingSessions = pgTable(
+//   "shoppingSession",
 //   {
 //     id: uuid("id").primaryKey().defaultRandom(),
-//     name: varchar("name", { length: 256 }).notNull(),
-//     email: varchar("email", { length: 256 }).notNull().unique(),
+//     userId : uuid("userId").notNull(),
+//     total: decimal("total").notNull(),
 //     createdAt: timestamp("created_at")
 //       .default(sql`CURRENT_TIMESTAMP`)
 //       .notNull(),
 //     updatedAt: timestamp("updatedAt"),
 //   },
-//   (example) => ({
-//     nameIndex: index("name_idx").on(example.name),
-//   })
-// );
-
-// export const userCards = createTable( 
-//   "userCard",
-//   {
-//     id: uuid("id").primaryKey().defaultRandom(),
-//     userId: uuid("userId").references(() => users.id).notNull(),
-//     productId: uuid("productId").references(() => products.id).notNull(),
-//     createdAt: timestamp("created_at")
-//       .default(sql`CURRENT_TIMESTAMP`)
-//       .notNull(),
-//     updatedAt: timestamp("updatedAt"),
-//   },
-//   (example) => ({
-//     userIdIndex: index("userId_idx").on(example.userId),
-//     productIdIndex: index("productId_idx").on(example.productId),
-//   })
-// );
-
-// export const posts = createTable(
-//   "post",
-//   {
-//     id: serial("id").primaryKey(),
-//     name: varchar("name", { length: 256 }),
+// )
 
 
-//     createdAt: timestamp("created_at")
-//       .default(sql`CURRENT_TIMESTAMP`)
-//       .notNull(),
-//     updatedAt: timestamp("updatedAt"),
-//   },
-//   (example) => ({
-//     nameIndex: index("name_idx").on(example.name),
-//   })
-// );
+export const cartItem = pgTable(
+  "cartItem",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId : uuid("userId").notNull().references(() => users.id),
+    productId : uuid("productId").notNull().references(() => products.id),
+    quantity : integer("quantity").notNull(),
+    createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+    updatedAt: timestamp("updatedAt"),
+  },
+);
+
+export const cartItemRelation = relations(cartItem, ({ one }) => ({
+  user: one(users, { fields: [cartItem.userId], references: [users.id] }),
+}))
+
+export const userRelationWithCartItem = relations(users, ({ many }) => ({
+  cartItems: many(cartItem),
+}))
+
+// export const userRelationWithShoppingSession = relations(users, ({ one }) => ({
+//   shoppingSession: one(shoppingSessions, { fields: [users.id], references: [shoppingSessions.userId] }),
+// }))
+
+// export const shoppingSessionRelations = relations(shoppingSessions, ({ many }) => ({
+//   cartItems: many(cartItem),
+// }))
+
+// export const cardItemRelationWithShoppingSession = relations(cartItem, ({ one }) => ({
+//   shoppingSession: one(shoppingSessions, { fields: [cartItem.sessionId], references: [shoppingSessions.id] }),
+// }))
+
+export const  cartItemRelationWithProducts = relations(cartItem, ({ many }) => ({
+  products: many(products),
+}))
+
+export const productRelationWithCartItem = relations(products, ({ many }) => ({
+  cartItems: many(cartItem),
+}))

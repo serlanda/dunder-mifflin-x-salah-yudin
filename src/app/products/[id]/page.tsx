@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { deleteProduct, getProduct } from "~/server/queries";
+import { getProduct } from "~/server/queries";
+
 
 export default async function ProductPage({
   params: { id: productId },
@@ -10,7 +11,9 @@ export default async function ProductPage({
   // const idAsNumber = Number(productId);
   // if (Number.isNaN(idAsNumber)) throw new Error("Not a number");
 
+
   const product = await getProduct(productId);
+
   return (
     <main className="flex justify-center items-center gap-80">
       <aside>
