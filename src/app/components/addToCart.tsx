@@ -16,7 +16,7 @@ export default function AddToCart({ product }) {
 
     // console.log(product.id)
     const activeUserCard = await db.insert(cartItem).values({
-      userId: activeUser.id,
+      userId: activeUser.clerkId,
       productId: product.id,
       quantity: 4,
     });
