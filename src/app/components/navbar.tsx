@@ -15,12 +15,15 @@ export default function Navbar() {
             <li className={pathname === "/koleksiyonlar/erkek" ? "font-semibold" : ""}><Link href="/koleksiyonlar/erkek" className="text-xl">Erkek</Link></li>
             <li className={pathname === "/koleksiyonlar/kadin" ? "font-semibold" : ""}><Link href="/koleksiyonlar/kadin" className="text-xl">Kadın</Link></li>
         </ul>
+        <div className="flex gap-10 text-xl font-semibold">
+        <Link href="/cart">Sepeti Goruntule</Link>
         <SignedOut>
                 <SignInButton/>
             </SignedOut>
             <SignedIn>
                 <UserButton/>
             </SignedIn>
+        </div>
         </header>
     )
 }

@@ -4,7 +4,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
   integer,
-  numeric,
   pgTable,
   timestamp,
   uuid,
@@ -58,7 +57,7 @@ export const userAddress = pgTable(
   "userAddress",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    userId: uuid("userId").references(() => users.id).notNull(),
+    userId: varchar("userId").notNull(),
     address: varchar("adress", { length: 256 }).notNull(),
     city: varchar("city", { length: 256 }).notNull(),
     district: varchar("district", { length: 256 }).notNull(),
@@ -71,6 +70,20 @@ export const userAddress = pgTable(
   },
 );
 
+export const cartItem = pgTable(
+  "cartItem",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId : varchar("userId").notNull(),
+    productId : varchar("productId").notNull(),
+    quantity : integer("quantity").notNull(),
+    createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+    updatedAt: timestamp("updatedAt"),
+  },
+);
+
 export const userRelationsWithAddress = relations(users, ({ one }) => ({
   userAddress: one(userAddress)
 }))
@@ -79,6 +92,21 @@ export const userAddressRelations = relations(userAddress, ({ one }) => ({
   user: one(users, { fields: [userAddress.userId], references: [users.id] }),
 }))
 
+export const cartItemRelation = relations(cartItem, ({ one }) => ({
+  user: one(users, { fields: [cartItem.userId], references: [users.id] }),
+}))
+
+export const userRelationWithCartItem = relations(users, ({ many }) => ({
+  cartItems: many(cartItem),
+}))
+
+export const  cartItemRelationWithProducts = relations(cartItem, ({ many }) => ({
+  products: many(products),
+}))
+
+export const productRelationWithCartItem = relations(products, ({ many }) => ({
+  cartItems: many(cartItem),
+}))
 // export const shoppingSessions = pgTable(
 //   "shoppingSession",
 //   {
@@ -93,27 +121,6 @@ export const userAddressRelations = relations(userAddress, ({ one }) => ({
 // )
 
 
-export const cartItem = pgTable(
-  "cartItem",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    userId : uuid("userId").notNull().defaultRandom().references(() => users.id),
-    productId : uuid("productId").notNull().references(() => products.id),
-    quantity : integer("quantity").notNull(),
-    createdAt: timestamp("created_at")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-    updatedAt: timestamp("updatedAt"),
-  },
-);
-
-export const cartItemRelation = relations(cartItem, ({ one }) => ({
-  user: one(users, { fields: [cartItem.userId], references: [users.id] }),
-}))
-
-export const userRelationWithCartItem = relations(users, ({ many }) => ({
-  cartItems: many(cartItem),
-}))
 
 // export const userRelationWithShoppingSession = relations(users, ({ one }) => ({
 //   shoppingSession: one(shoppingSessions, { fields: [users.id], references: [shoppingSessions.userId] }),
@@ -127,10 +134,3 @@ export const userRelationWithCartItem = relations(users, ({ many }) => ({
 //   shoppingSession: one(shoppingSessions, { fields: [cartItem.sessionId], references: [shoppingSessions.id] }),
 // }))
 
-export const  cartItemRelationWithProducts = relations(cartItem, ({ many }) => ({
-  products: many(products),
-}))
-
-export const productRelationWithCartItem = relations(products, ({ many }) => ({
-  cartItems: many(cartItem),
-}))

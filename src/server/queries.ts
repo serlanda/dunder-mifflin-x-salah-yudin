@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { db } from "~/server/db";
 import { products } from "./db/schema";
 import { eq } from "drizzle-orm";
+import { auth } from "@clerk/nextjs/server";
 
 
 export async function getProduct(id: number) {
@@ -23,3 +24,24 @@ export async function deleteProduct(id: string) {
   redirect("/");
 }
 
+
+export async function getCartItems() {
+  const user = auth()
+
+  const cartItems = await db.query.cartItem.findMany({
+    where: (model, { eq }) => eq(model.userId, user.userId),
+  });
+
+  return cartItems;
+}
+
+
+// export async function getCartItems({id}: {id: string}) {
+
+
+//   const cartItems = await db.query.cartItem.findMany({
+//     where: (model, { eq }) => eq(model.userId, id),
+//   });
+
+//   return cartItems;
+// }
