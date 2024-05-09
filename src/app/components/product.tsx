@@ -25,8 +25,8 @@ export default function Product({ product }) {
           <h2>{product.name}</h2>
           <p>{product.price}</p>
         </Link>
+      <AddToCart product={product} />
       </div>
-        <AddToCart/>
-\    </>
+    </>
   );
 }

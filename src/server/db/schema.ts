@@ -97,7 +97,7 @@ export const cartItem = pgTable(
   "cartItem",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    userId : uuid("userId").notNull().references(() => users.id),
+    userId : uuid("userId").notNull().defaultRandom().references(() => users.id),
     productId : uuid("productId").notNull().references(() => products.id),
     quantity : integer("quantity").notNull(),
     createdAt: timestamp("created_at")

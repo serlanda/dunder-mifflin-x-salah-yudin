@@ -1,18 +1,25 @@
+import { auth } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
 import { cartItem } from "~/server/db/schema";
 
-export default function AddToCart() {
+export default function AddToCart({ product }) {
+  const user = auth()
 
   async function handleCart(data: FormData) {
     "use server";
+    
+    // console.log(user.userId)
 
-    const product = await db.query.products.findFirst();
+    const activeUser = await db.query.users.findFirst({
+      where: (model, { eq }) => eq(model.clerkId, user.userId)
+    })
 
-      await db.insert(cartItem).values({
-        userId: "1d787b96-7bba-45fc-bd0b-83b5368f0788",
-        productId: product.id,
-        quantity: 4,
-      });
+    // console.log(product.id)
+    const activeUserCard = await db.insert(cartItem).values({
+      userId: activeUser.id,
+      productId: product.id,
+      quantity: 4,
+    });
   }
 
   return (
