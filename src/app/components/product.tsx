@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Image from "next/image";
 import Link from "next/link";
-import AddToCart from "./addToCart";
 
 export default function Product({ product }) {
   // const [isHovered, setIsHovered] = useState(false);
@@ -25,7 +24,6 @@ export default function Product({ product }) {
           <h2>{product.name}</h2>
           <p>{product.price}</p>
         </Link>
-      <AddToCart product={product} />
       </div>
     </>
   );

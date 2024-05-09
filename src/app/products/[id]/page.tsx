@@ -1,4 +1,5 @@
 import Image from "next/image";
+import AddToCart from "~/app/components/addToCart";
 import { getProduct } from "~/server/queries";
 
 
@@ -28,6 +29,7 @@ export default async function ProductPage({
         <h1>{product.name}</h1>
         <p>{product.price}</p>
         <p>{product.description}</p>
+      <AddToCart product={product} />
       </section>
     </main>
   );
