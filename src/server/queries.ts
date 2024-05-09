@@ -25,15 +25,15 @@ export async function deleteProduct(id: string) {
 }
 
 
-export async function getCartItems() {
-  const user = auth()
+// export async function getCartItems() {
+//   const user = auth()
 
-  const cartItems = await db.query.cartItem.findMany({
-    where: (model, { eq }) => eq(model.userId, user.userId),
-  });
+//   const cartItems = await db.query.cartItem.findMany({
+//     where: (model, { eq }) => eq(model.userId, user.userId),
+//   });
 
-  return cartItems;
-}
+//   return cartItems;
+// }
 
 
 // export async function getCartItems({id}: {id: string}) {

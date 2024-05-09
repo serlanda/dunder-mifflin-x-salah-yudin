@@ -93,7 +93,7 @@ export const userAddressRelations = relations(userAddress, ({ one }) => ({
 }))
 
 export const cartItemRelation = relations(cartItem, ({ one }) => ({
-  user: one(users, { fields: [cartItem.userId], references: [users.id] }),
+  user: one(users, { fields: [cartItem.userId], references: [users.clerkId] }),
 }))
 
 export const userRelationWithCartItem = relations(users, ({ many }) => ({
