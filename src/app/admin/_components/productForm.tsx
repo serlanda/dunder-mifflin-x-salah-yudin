@@ -2,8 +2,16 @@
 
 import { useFormStatus } from "react-dom";
 import { addProduct } from "../_actions/products";
+import { UploadButton } from "~/utils/uploadthing";
+import { useState } from "react";
 
 export default function ProductForm() {
+  const [image, setImage] = useState<string>("");
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImage(e.target.value);
+  };
+
   return (
     <div className="border p-10">
       <h2 className="text-center text-2xl font-semibold">Ürün Ekle</h2>
@@ -46,12 +54,30 @@ export default function ProductForm() {
             type="text"
             id="image"
             name="image"
-            placeholder="Ürün görseli linkini girin."
+            value={image}
+            onChange={(e) => onChange(e)}
+            placeholder="Ürün görseli yükleyin."
             className="rounded-lg px-4 py-2 text-black"
             required
           />
         </div>
-        <SubmitButton />
+        <div>
+          {image ? (
+            <>
+              <img src={image} alt="product image" width={500} height={500}/>
+            </>
+          ) : (
+            <>
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  setImage(res[0].url)
+                }}
+              />
+            </>
+          )}
+        </div>
+        <SubmitButton/>
       </form>
     </div>
   );

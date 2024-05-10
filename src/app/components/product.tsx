@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Product({ product }) {
-  // const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
@@ -12,8 +11,6 @@ export default function Product({ product }) {
         <Link
           href={`/products/${product.id}`}
           className="text-white"
-          // onMouseEnter={() => setIsHovered(true)}
-          // onMouseLeave={() => setIsHovered(false)}
         >
           <Image
             src={product.image}
