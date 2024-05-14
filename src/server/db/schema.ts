@@ -17,120 +17,76 @@ import {
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 
-
-
 // export const createTable = pgTableCreator((name) => `dunder-mifflin-x-salah-yudin_${name}`);
 
-export const products = pgTable(
-  "product",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    name: varchar("name", { length: 256 }).notNull(),
-    price: integer("price").notNull(),
-    description: varchar("description", { length: 1024 }),
-    image: varchar("image", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt"),
-  },
-);
-
-export const users = pgTable(
-  "user",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    clerkId: varchar("clerkId").notNull(),
-    firstName: varchar("firstName", { length: 256 }).notNull(),
-    lastName: varchar("lastName", { length: 256 }).notNull(),
-    email: varchar("email", { length: 256 }).notNull().unique(),
-    // address: varchar("address", { length: 1024 }).notNull(),
-    // phone: numeric("phone").notNull(),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt"),
-  },
-);
-
-export const userAddress = pgTable(
-  "userAddress",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    userId: varchar("userId").notNull(),
-    address: varchar("adress", { length: 256 }).notNull(),
-    city: varchar("city", { length: 256 }).notNull(),
-    district: varchar("district", { length: 256 }).notNull(),
-    telephone: varchar("telephone", { length: 256 }).notNull(),
-    postalCode: varchar("postalCode", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt"),
-  },
-);
-
-export const cartItem = pgTable(
-  "cartItem",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    userId : varchar("userId").notNull(),
-    productId : varchar("productId").notNull(),
-    quantity : integer("quantity").notNull(),
-    createdAt: timestamp("created_at")
+export const products = pgTable("product", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: varchar("name", { length: 256 }).notNull(),
+  price: integer("price").notNull(),
+  description: varchar("description", { length: 1024 }),
+  image: varchar("image", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-    updatedAt: timestamp("updatedAt"),
-  },
-);
+  updatedAt: timestamp("updatedAt"),
+});
 
-export const userRelationsWithAddress = relations(users, ({ one }) => ({
-  userAddress: one(userAddress)
-}))
+export const users = pgTable("user", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  clerkId: varchar("clerkId").notNull(),
+  firstName: varchar("firstName", { length: 256 }).notNull(),
+  lastName: varchar("lastName", { length: 256 }).notNull(),
+  email: varchar("email", { length: 256 }).notNull().unique(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+});
 
-export const userAddressRelations = relations(userAddress, ({ one }) => ({
-  user: one(users, { fields: [userAddress.userId], references: [users.id] }),
-}))
+export const userAddress = pgTable("userAddress", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: varchar("userId").notNull(),
+  address: varchar("adress", { length: 256 }).notNull(),
+  city: varchar("city", { length: 256 }).notNull(),
+  district: varchar("district", { length: 256 }).notNull(),
+  telephone: varchar("telephone", { length: 256 }).notNull(),
+  postalCode: varchar("postalCode", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+});
 
-export const cartItemRelation = relations(cartItem, ({ one }) => ({
-  user: one(users, { fields: [cartItem.userId], references: [users.clerkId] }),
-}))
-
-export const userRelationWithCartItem = relations(users, ({ many }) => ({
-  cartItems: many(cartItem),
-}))
-
-export const  cartItemRelationWithProducts = relations(cartItem, ({ many }) => ({
-  products: many(products),
-}))
-
-export const productRelationWithCartItem = relations(products, ({ many }) => ({
-  cartItems: many(cartItem),
-}))
-// export const shoppingSessions = pgTable(
-//   "shoppingSession",
-//   {
-//     id: uuid("id").primaryKey().defaultRandom(),
-//     userId : uuid("userId").notNull(),
-//     total: decimal("total").notNull(),
-//     createdAt: timestamp("created_at")
-//       .default(sql`CURRENT_TIMESTAMP`)
-//       .notNull(),
-//     updatedAt: timestamp("updatedAt"),
-//   },
-// )
+export const cartItems = pgTable("cartItem", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: varchar("userId").notNull(),
+  productId: uuid("productId::uuid").notNull(),
+  quantity: integer("quantity").notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+});
 
 
+export const productRelations = relations(products, ({ many }) => ({
+  cartItems: many(cartItems),
+}));
 
-// export const userRelationWithShoppingSession = relations(users, ({ one }) => ({
-//   shoppingSession: one(shoppingSessions, { fields: [users.id], references: [shoppingSessions.userId] }),
-// }))
+export const cartItemProductRelations = relations(cartItems, ({ one }) => ({
+  products: one(products, {
+    fields: [cartItems.productId],
+    references: [products.id],
+  }),
+}));
 
-// export const shoppingSessionRelations = relations(shoppingSessions, ({ many }) => ({
-//   cartItems: many(cartItem),
-// }))
+export const userRelations = relations(users, ({ many }) => ({
+  cartItems: many(cartItems),
+}));
 
-// export const cardItemRelationWithShoppingSession = relations(cartItem, ({ one }) => ({
-//   shoppingSession: one(shoppingSessions, { fields: [cartItem.sessionId], references: [shoppingSessions.id] }),
-// }))
-
+export const cartItemRelations = relations(cartItems, ({ one }) => ({
+  users: one(users, {
+    fields: [cartItems.userId],
+    references: [users.clerkId],
+  }),
+}));
