@@ -31,6 +31,7 @@ export default async function CartPage() {
               <h2 className="text-xl font-semibold">
                 {cartItem.products.name}
               </h2>
+              <span>Adet: {cartItem.quantity}</span>
               <span>Fiyat ₺ {cartItem.products.price}</span>
               <p className="mt-auto text-sm">
                 Ürün Kodu: {cartItem.products.id}

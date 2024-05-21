@@ -3,8 +3,8 @@ import "@uploadthing/react/styles.css";
 
 import { Inter } from "next/font/google";
 import Navbar from "./components/navbar";
-import { ClerkProvider } from '@clerk/nextjs'
-
+import { ClerkProvider } from "@clerk/nextjs";
+import { trTR } from "@clerk/localizations"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,13 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-    <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
-        <Navbar />
-        {children}
-      </body>
-    </html>
+    <ClerkProvider localizations={trTR}>
+      <html lang="en">
+        <body className={`font-sans ${inter.variable}`}>
+          <Navbar />
+          {children}
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

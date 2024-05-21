@@ -1,7 +1,9 @@
 import { auth } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
-import { cartItems, productOnCartItems } from "~/server/db/schema";
+import { cartItems } from "~/server/db/schema";
 import ProductCount from "./productCount";
+import { redirect } from "next/navigation";
+
 
 export default function AddToCart({ product }) {
   const user = auth();
@@ -15,11 +17,7 @@ export default function AddToCart({ product }) {
       quantity: Object.fromEntries(data.entries())["quantity"],
     });
 
-    // await db.insert(productOnCartItems).values({
-    //   productId: product.id,
-    //   cartItemId: cartItems.id,
-    // });
-
+    redirect("/cart");
   }
 
   return (
