@@ -2,9 +2,9 @@ import "~/styles/globals.css";
 import "@uploadthing/react/styles.css";
 
 import { Inter } from "next/font/google";
-import Navbar from "./components/navbar";
 import { ClerkProvider } from "@clerk/nextjs";
-import { trTR } from "@clerk/localizations"
+import { trTR } from "@clerk/localizations";
+import Navbar from "./components/navbar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,8 +24,8 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider localizations={trTR}>
-      <html lang="en">
-        <body className={`font-sans ${inter.variable}`}>
+      <html lang="tr">
+        <body className={`font-sans ${inter.variable} overflow-y-scroll`}>
           <Navbar />
           {children}
         </body>

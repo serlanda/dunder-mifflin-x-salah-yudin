@@ -2,10 +2,10 @@
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import Carousel from "./carousel";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
+import TopBar from "./topBar";
 
 export default async function Navbar() {
   const user = auth();
@@ -16,8 +16,8 @@ export default async function Navbar() {
 
   return (
     <>
-      <Carousel />
-      <header className="w-[100%] border-b border-gray-200 bg-[#FFFF] px-8 py-[30px] lg:py-[42px] xl:py-8">
+      <TopBar />
+      <header className="w-[100%] px-8 lg:py-[42px] xl:py-9 sticky -top-1 z-10 bg-[#FFFF]">
         <div className="container relative mx-auto flex flex-grow-0 flex-row items-center justify-center lg:justify-between">
           <ul className="mr-auto flex gap-10">
             <li>
@@ -26,18 +26,8 @@ export default async function Navbar() {
               </Link>
             </li>
             <li>
-              <Link href="/koleksiyonlar" className="text-xl">
-                Koleksiyonlar
-              </Link>
-            </li>
-            <li>
-              <Link href="/koleksiyonlar/erkek" className="text-xl">
-                Erkek
-              </Link>
-            </li>
-            <li>
-              <Link href="/koleksiyonlar/kadin" className="text-xl">
-                Kadın
+              <Link href="/products" className="text-xl">
+                Tüm Ürünler
               </Link>
             </li>
           </ul>
