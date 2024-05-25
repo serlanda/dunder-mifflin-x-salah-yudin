@@ -68,6 +68,33 @@ export const cartItems = pgTable("cartItem", {
   updatedAt: timestamp("updatedAt"),
 });
 
+export const comments = pgTable("comment", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: varchar("userId").notNull(),
+  author: varchar("userName", { length: 256 }).notNull(),
+  productId: uuid("productId::uuid").notNull(),
+  header: varchar("header", { length: 256 }).notNull(),
+  content: varchar("content", { length: 256 }).notNull(),
+  star: varchar("star", { length: 10 }).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+});
+
+export const commentRelations = relations(comments, ({ one }) => ({
+  products: one(products, {
+    fields: [comments.productId],
+    references: [products.id],
+  }),
+}));
+
+export const userCommentRelations = relations(comments, ({ one }) => ({
+  users: one(users, {
+    fields: [comments.userId],
+    references: [users.clerkId],
+  }),
+}));
 
 export const productRelations = relations(products, ({ many }) => ({
   cartItems: many(cartItems),
@@ -82,6 +109,7 @@ export const cartItemProductRelations = relations(cartItems, ({ one }) => ({
 
 export const userRelations = relations(users, ({ many }) => ({
   cartItems: many(cartItems),
+  comments: many(comments),
 }));
 
 export const cartItemRelations = relations(cartItems, ({ one }) => ({

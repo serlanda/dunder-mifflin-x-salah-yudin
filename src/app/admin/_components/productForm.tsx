@@ -89,9 +89,9 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-lg bg-green-500 px-4 py-2 text-black transition-colors hover:bg-green-700"
+      className="w-full bg-green-600 rounded-lg px-4 py-2 text-black transition-colors hover:bg-green-700"
     >
-      {pending ? "Kaydediliyor..." : "Ürün Kaydet"}
+      {pending ? "Kaydediliyor..." : "Ürünü Ekle"}
     </button>
   );
 }

@@ -12,7 +12,7 @@ export default async function HomePage() {
     <>
       <ImageSlider />
       <Carousel />
-      <main>
+      <main className="mt-8">
         <div className="flex flex-wrap items-center justify-center gap-4">
           {products.map((product) => (
             <div key={product.id} className="w-max h-[460px]">

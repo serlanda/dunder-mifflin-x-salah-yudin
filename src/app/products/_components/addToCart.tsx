@@ -4,7 +4,6 @@ import { cartItems } from "~/server/db/schema";
 import ProductCount from "./productCount";
 import { redirect } from "next/navigation";
 
-
 export default function AddToCart({ product }) {
   const user = auth();
 
@@ -21,14 +20,13 @@ export default function AddToCart({ product }) {
   }
 
   return (
-
-    <form action={handleCart}>
+    <form action={handleCart} className="w-[100%] h-[100%] flex">
       <ProductCount product={product} />
       <button
-        className="rounded-lg border px-4 py-2 text-white transition-colors bg-black hover:bg-red-500"
+        className="w-[50%] bg-[#A2D2FF] text-[25px] text-white transition-colors hover:bg-[#CDB4DB] py-2"
         type="submit"
       >
-        Add to Cart
+        Sepete Ekle
       </button>
     </form>
   );

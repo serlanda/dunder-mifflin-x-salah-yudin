@@ -36,7 +36,7 @@ export default function TopBar() {
           </svg>
         </a>
       </div>
-      <div className="tracking-widest font-semibold">
+      <div className="tracking-widest font-bold text-[#FFAFCC]">
         Hızlı Teslimat ve 400₺ Üzeri Ücretsiz Kargo
       </div>
       <div className="mr-4">Türkçe</div>

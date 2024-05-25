@@ -26,6 +26,7 @@ export default function ImageSlider() {
   };
 
   return (
+    <section className="bg-[#f8f8f4] w-screen pb-8">
     <div className="relative left-[50%] translate-x-[-50%] w-[90%] overflow-hidden mt-8 rounded-3xl">
       <Image src={images[imageIndex]} className="block items-center w-[100%] object-contain" alt="ana sayfa urun resmi" width={1000} height={500}/>
       <button
@@ -67,5 +68,6 @@ export default function ImageSlider() {
         </svg>
       </button>
     </div>
+    </section>
   );
 }
