@@ -4,6 +4,7 @@ import { db } from "~/server/db";
 import { getProduct } from "~/server/queries";
 import Comment from "../_components/comment";
 import AddComment from "../_components/addComment";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function ProductPage({
   params: { id: productId },
@@ -16,17 +17,14 @@ export default async function ProductPage({
     where: (model, { eq }) => eq(model.productId, productId),
   });
 
-  // const userComments = await db.query.users.findMany({
-  //   with: {
-  //     comments: {
-  //       where: (model, { eq }) => eq(model.productId, productId),
-  //     },
-  //   },
-  // });
+  const user = auth();
+  const userComment = comments.find(
+    (comment) => comment.userId === user.userId,
+  );
 
   return (
     <>
-      <main className="flex items-center justify-evenly gap-10 bg-[#f8f8f4] lg:flex-col xl:flex-row p-6">
+      <main className="flex items-center justify-evenly gap-10 bg-[#f8f8f4] p-6 lg:flex-col xl:flex-row">
         <section className="m-6 rounded-xl">
           <Image
             src={product.image}
@@ -47,18 +45,20 @@ export default async function ProductPage({
           <AddToCart product={product} />
         </section>
       </main>
-      <div className="h-screen bg-red- px-6">
-        <h2 className="text-xl font-semibold my-6">Değerlendirmeler</h2>
+      <div className="bg-red- h-screen px-6">
+        <h2 className="my-6 text-xl font-semibold">Değerlendirmeler</h2>
         <div className="flex flex-wrap gap-4">
-          <div className="px-4 py-2 h-[350px] w-[500px] border bg-[#BDE0FE] rounded-xl">
-            <h3 className="font-semibold text-xl mb-2">Bir Yorum Yaz</h3>
-            <AddComment product={productId} />
-          </div>
-        {comments.map((comment) => (
-          <section key={comment.id} className="w-max">
-            <Comment comment={comment} />
-          </section>
-        ))}
+          {!userComment && (
+            <div className="h-[300px] w-[540px] rounded-xl border bg-[#BDE0FE] px-4 py-2 shadow-lg">
+              <h3 className="mb-2 text-xl font-semibold text-center">Bir Değerlendirme Yazın</h3>
+              <AddComment product={productId} />
+            </div>
+          )}
+          {comments.map((comment) => (
+            <section key={comment.id} className="w-max">
+              <Comment comment={comment} user={user} />
+            </section>
+          ))}
         </div>
       </div>
     </>

@@ -4,6 +4,10 @@ import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { db } from "~/server/db";
 import { comments } from "~/server/db/schema";
+import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+
 
 const addSchema = z.object({
     author: z.string().min(1),
@@ -30,4 +34,12 @@ export async function addComment(formData: FormData) {
         content: data.content,
         star: data.star,
     });
+
+    redirect(`/products/${data.productId}`);
+}
+
+export async function deleteComment(id: string) {
+    await db.delete(comments).where(eq(comments.id, id))
+
+    revalidatePath("/products/[id]");
 }

@@ -74,7 +74,7 @@ export const comments = pgTable("comment", {
   author: varchar("userName", { length: 256 }).notNull(),
   productId: uuid("productId::uuid").notNull(),
   header: varchar("header", { length: 256 }).notNull(),
-  content: varchar("content", { length: 256 }).notNull(),
+  content: varchar("content", { length: 512 }).notNull(),
   star: varchar("star", { length: 10 }).notNull(),
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
