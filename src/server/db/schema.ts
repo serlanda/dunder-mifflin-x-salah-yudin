@@ -69,7 +69,7 @@ export const cartItems = pgTable("cartItem", {
 });
 
 export const shoppingSessions = pgTable("shoppingSession", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: varchar("id").primaryKey(),
   userId: varchar("userId").notNull(),
   total: varchar("total").notNull(),
   createdAt: timestamp("created_at")

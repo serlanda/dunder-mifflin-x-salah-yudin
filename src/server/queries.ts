@@ -5,7 +5,6 @@ import { db } from "~/server/db";
 import { products } from "./db/schema";
 import { eq } from "drizzle-orm";
 
-
 export async function getProduct(id: number) {
   const product = await db.query.products.findFirst({
     where: (model, { eq }) => eq(model.id, id),
