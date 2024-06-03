@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider localizations={trTR}>
+    <ClerkProvider localization={trTR}>
       <html lang="tr">
         <body className={`font-sans ${inter.variable} overflow-y-scroll`}>
           <Navbar />

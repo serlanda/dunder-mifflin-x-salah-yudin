@@ -1,6 +1,9 @@
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { db } from "~/server/db";
+import FormPayment from "./_components/formPayment";
+import Link from "next/link";
+import CheckoutButton from "./_components/checkoutButton";
 
 export default async function CartPage() {
   const user = auth();
@@ -14,9 +17,9 @@ export default async function CartPage() {
 
   return (
     <main className="p-10">
-      <h1 className="text-2xl font-semibold">Sepetim</h1>
+      <h1 className="text-2xl font-semibold">Sepetim ({cartItems?.length})</h1>
       <section className="flex flex-col gap-4 py-4">
-        {cartItems && cartItems.map((cartItem) => (
+        {cartItems?.map((cartItem) => (
           <div
             key={cartItem.id}
             className="flex flex-row gap-2 border border-black p-2"
@@ -45,6 +48,7 @@ export default async function CartPage() {
           </div>
         ))}
       </section>
+        <CheckoutButton/>
     </main>
   );
 }

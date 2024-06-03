@@ -68,6 +68,16 @@ export const cartItems = pgTable("cartItem", {
   updatedAt: timestamp("updatedAt"),
 });
 
+export const shoppingSessions = pgTable("shoppingSession", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: varchar("userId").notNull(),
+  total: varchar("total").notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+});
+
 export const comments = pgTable("comment", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: varchar("userId").notNull(),
@@ -107,14 +117,25 @@ export const cartItemProductRelations = relations(cartItems, ({ one }) => ({
   }),
 }));
 
-export const userRelations = relations(users, ({ many }) => ({
+export const userRelations = relations(users, ({ one, many }) => ({
   cartItems: many(cartItems),
   comments: many(comments),
+  shoppingSessions: one(shoppingSessions, {
+    fields: [users.clerkId],
+    references: [shoppingSessions.userId],
+  }),
 }));
 
 export const cartItemRelations = relations(cartItems, ({ one }) => ({
   users: one(users, {
     fields: [cartItems.userId],
+    references: [users.clerkId],
+  }),
+}));
+
+export const shoppingSessionRelations = relations(shoppingSessions, ({ one }) => ({
+  users: one(users, {
+    fields: [shoppingSessions.userId],
     references: [users.clerkId],
   }),
 }));

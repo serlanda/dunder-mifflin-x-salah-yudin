@@ -66,7 +66,9 @@ export default async function Navbar() {
               </svg>
             </Link>
             <SignedOut>
-              <SignInButton />
+              <SignInButton>
+                Giriş Yap
+              </SignInButton>
             </SignedOut>
             <SignedIn>
               <UserButton />

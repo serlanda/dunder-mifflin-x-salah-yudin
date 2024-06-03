@@ -25,7 +25,7 @@ export default async function ProductPage({
   return (
     <>
       <main className="flex items-center justify-evenly gap-10 bg-[#f8f8f4] p-6 lg:flex-col xl:flex-row">
-        <section className="m-6 rounded-xl">
+        <section className="m-6 flex flex-col gap-2 rounded-xl">
           <Image
             src={product.image}
             alt={product.name}
@@ -33,6 +33,29 @@ export default async function ProductPage({
             width={800}
             height={800}
           />
+          <div className="flex gap-4">
+          <Image
+            src={product.image}
+            alt={product.name}
+            className="scale-x-[-1] transform rounded-lg object-contain hover:opacity-70 transition-colors"
+            width={100}
+            height={100}
+          />
+          <Image
+            src={product.image}
+            alt={product.name}
+            className="transform rounded-lg object-contain hover:opacity-70 transition-colors"
+            width={100}
+            height={100}
+          />
+          <Image
+            src={product.image}
+            alt={product.name}
+            className="scale-x-[-1] transform rounded-lg object-contain hover:opacity-70 transition-colors"
+            width={100}
+            height={100}
+          />
+          </div>
         </section>
         <section className="m-6 flex w-[900px] flex-col items-center">
           <div className="overflow-hidden text-left lg:h-[500px] xl:h-[700px]">
@@ -50,7 +73,9 @@ export default async function ProductPage({
         <div className="flex flex-wrap gap-4">
           {!userComment && (
             <div className="h-[300px] w-[540px] rounded-xl border bg-[#BDE0FE] px-4 py-2 shadow-lg">
-              <h3 className="mb-2 text-xl font-semibold text-center">Bir Değerlendirme Yazın</h3>
+              <h3 className="mb-2 text-center text-xl font-semibold">
+                Bir Değerlendirme Yazın
+              </h3>
               <AddComment product={productId} />
             </div>
           )}

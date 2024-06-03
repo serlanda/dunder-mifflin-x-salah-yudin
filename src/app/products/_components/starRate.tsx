@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 
 export default function StarRate() {
-  const [rating, setRating] = useState("");
-  const [hover, setHover] = useState("");
+  const [rating, setRating] = useState<string>("");
+  const [hover, setHover] = useState<string>("");
 
   const handleClick = (currentRate) => {
     setRating(currentRate);
